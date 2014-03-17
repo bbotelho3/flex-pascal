@@ -6,6 +6,10 @@
 
 int linhas = 0;
 
+void imprimir(char *tipo_de_token);
+
+void erro();
+
 %}
 
 %x comentario
@@ -24,49 +28,50 @@ string            \'([^'\n]|\'\')+\'|\"([^'\n]|\'\')+\"
 
  /* Palavras reservadas */
 
-absolute|array|begin|case|char|const|div|do|dowto|else|end|external|file|for|forward|func|function|goto|if|implementation|in|integer|interface|interrupt|label|main|nil|nit|of|packed|proc|program|real|record|repeat|set|shl|shr|string|then|to|type|unit|until|uses|var|while|with|xor|write|writeln|read					 printf("%s\tPALAVRARESERVADA\n", yytext);
+absolute|array|begin|case|char|const|div|do|dowto|else|end|external|file|for|forward|func|function|goto|if|implementation|in|integer|interface|interrupt|label|main|nil|nit|of|packed|proc|program|real|record|repeat|set|shl|shr|string|then|to|type|unit|until|uses|var|while|with|xor|write|writeln|read {					 
+                           imprimir("PALAVRARESERVADA");}
 
  /* Comentários */
 
 "/*"         			         BEGIN(comentario);     
-<comentario>[^*\n]*        /* Tudo que não é nova linha e * */
-<comentario>"*"+[^*/\n]*   /* * não seguidos por / */
+<comentario>[^*\n]*        /* Tudo que não é quebra de linha e * */
+<comentario>"*"+[^*/\n]*   /* * não seguidos por / e quebras de linha  */
 <comentario>\n             linhas++;
 <comentario>"*/"           BEGIN(INITIAL);
 
  /* Atribuição */
 
-":="                 printf("%s\tATRIBUICAO\n", yytext);
+":="                       imprimir("ATRIBUICAO"); 
 
  /* Operadores lógicos */
 
-and|or|not           printf("%s\tOPERADORLOGICO\n", yytext);
+and|or|not                 imprimir("OPERADORLOGICO");
 
  /* Operadores relacionais */
 
-"="|">="|"<="|">"|"<"|"<>" printf("%s\tOPERADORRELACIONAL\n", yytext);
+"="|">="|"<="|">"|"<"|"<>" imprimir("OPERADORRELACIONAL");
 
  /* Operadores aritméticos */
 
-"+"|-|"*"|"/"|mod    printf("%s\tOPERADOR\n", yytext);
+"+"|-|"*"|"/"|mod          imprimir("OPERADOR");
 
  /* Valores */
 
-{inteiro}            printf("%s\tNUMEROINTEIRO\n", yytext);
-{real}               printf("%s\tNUMEROREAL\n", yytext);
-{string}             printf("%s\tSTRING\n", yytext);
+{inteiro}                  imprimir("NUMEROINTEIRO");
+{real}                     imprimir("NUMEROREAL");
+{string}                   imprimir("STRING");
 
  /* Identificadores (variáveis, nomes de programas, nomes de funções) */
 
-{identificador}      printf("%s\tIDENTIFICADOR\n", yytext);
+{identificador}            imprimir("IDENTIFICADOR");
 
  /* Símbolos */
 
-[=,;:()] 		         printf("%s\tSIMBOLOESPECIAL\n", yytext);
+[=,;:()] 		               imprimir("SIMBOLOESPECIAL");
 
  /* Ponto final */
 
-"."					         printf("%s\tFIM\n", yytext);
+"."					               imprimir("FIM"); 
 
  /* Espaços em branco são consumidos */
 
@@ -74,15 +79,27 @@ and|or|not           printf("%s\tOPERADORLOGICO\n", yytext);
 
  /* Quebras de linhas são contadas para facilitar a identificação de tokens inválidos */
 
-\n                   linhas++;
+\n                         linhas++;
 
  /* Outros, gera erro */
 
-.                    {printf("Erro na análise léxica do código fonte. O caractere %s na linha %d não é reconhecido.\n", yytext, linhas);exit(1);}
+.                          erro(); 
 
 %%
 
-int main(int argc, char *argv[]){
+void imprimir(char *tipo_de_token)
+{
+  printf("%s\t%s\n", yytext, tipo_de_token);
+}
+
+void erro() 
+{
+  printf("Erro na análise léxica do código fonte. O caractere %s na linha %d não é reconhecido.\n", yytext, linhas);
+  exit(1);
+}
+
+int main(int argc, char *argv[])
+{
 	yyin = fopen(argv[1], "r");
 	yylex();
 	fclose(yyin);

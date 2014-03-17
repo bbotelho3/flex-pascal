@@ -590,8 +590,12 @@ char *yytext;
 
 int linhas = 0;
 
+void imprimir(char *tipo_de_token);
 
-#line 595 "pascal.c"
+void erro();
+
+
+#line 599 "pascal.c"
 
 #define INITIAL 0
 #define comentario 1
@@ -774,12 +778,12 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 23 "pascal.lex"
+#line 27 "pascal.lex"
 
 
  /* Palavras reservadas */
 
-#line 783 "pascal.c"
+#line 787 "pascal.c"
 
 	if ( !(yy_init) )
 		{
@@ -864,119 +868,120 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 27 "pascal.lex"
-printf("%s\tPALAVRARESERVADA\n", yytext);
+#line 31 "pascal.lex"
+{					 
+                           imprimir("PALAVRARESERVADA");}
 	YY_BREAK
 /* Comentários */
 case 2:
 YY_RULE_SETUP
-#line 31 "pascal.lex"
+#line 36 "pascal.lex"
 BEGIN(comentario);     
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 32 "pascal.lex"
-/* Tudo que não é nova linha e * */
+#line 37 "pascal.lex"
+/* Tudo que não é quebra de linha e * */
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 33 "pascal.lex"
-/* * não seguidos por / */
+#line 38 "pascal.lex"
+/* * não seguidos por / e quebras de linha  */
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 34 "pascal.lex"
+#line 39 "pascal.lex"
 linhas++;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 35 "pascal.lex"
+#line 40 "pascal.lex"
 BEGIN(INITIAL);
 	YY_BREAK
 /* Atribuição */
 case 7:
 YY_RULE_SETUP
-#line 39 "pascal.lex"
-printf("%s\tATRIBUICAO\n", yytext);
+#line 44 "pascal.lex"
+imprimir("ATRIBUICAO"); 
 	YY_BREAK
 /* Operadores lógicos */
 case 8:
 YY_RULE_SETUP
-#line 43 "pascal.lex"
-printf("%s\tOPERADORLOGICO\n", yytext);
+#line 48 "pascal.lex"
+imprimir("OPERADORLOGICO");
 	YY_BREAK
 /* Operadores relacionais */
 case 9:
 YY_RULE_SETUP
-#line 47 "pascal.lex"
-printf("%s\tOPERADORRELACIONAL\n", yytext);
+#line 52 "pascal.lex"
+imprimir("OPERADORRELACIONAL");
 	YY_BREAK
 /* Operadores aritméticos */
 case 10:
 YY_RULE_SETUP
-#line 51 "pascal.lex"
-printf("%s\tOPERADOR\n", yytext);
+#line 56 "pascal.lex"
+imprimir("OPERADOR");
 	YY_BREAK
 /* Valores */
 case 11:
 YY_RULE_SETUP
-#line 55 "pascal.lex"
-printf("%s\tNUMEROINTEIRO\n", yytext);
+#line 60 "pascal.lex"
+imprimir("NUMEROINTEIRO");
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 56 "pascal.lex"
-printf("%s\tNUMEROREAL\n", yytext);
+#line 61 "pascal.lex"
+imprimir("NUMEROREAL");
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 57 "pascal.lex"
-printf("%s\tSTRING\n", yytext);
+#line 62 "pascal.lex"
+imprimir("STRING");
 	YY_BREAK
 /* Identificadores (variáveis, nomes de programas, nomes de funções) */
 case 14:
 YY_RULE_SETUP
-#line 61 "pascal.lex"
-printf("%s\tIDENTIFICADOR\n", yytext);
+#line 66 "pascal.lex"
+imprimir("IDENTIFICADOR");
 	YY_BREAK
 /* Símbolos */
 case 15:
 YY_RULE_SETUP
-#line 65 "pascal.lex"
-printf("%s\tSIMBOLOESPECIAL\n", yytext);
+#line 70 "pascal.lex"
+imprimir("SIMBOLOESPECIAL");
 	YY_BREAK
 /* Ponto final */
 case 16:
 YY_RULE_SETUP
-#line 69 "pascal.lex"
-printf("%s\tFIM\n", yytext);
+#line 74 "pascal.lex"
+imprimir("FIM"); 
 	YY_BREAK
 /* Espaços em branco são consumidos */
 case 17:
 YY_RULE_SETUP
-#line 73 "pascal.lex"
+#line 78 "pascal.lex"
 
 	YY_BREAK
 /* Quebras de linhas são contadas para facilitar a identificação de tokens inválidos */
 case 18:
 /* rule 18 can match eol */
 YY_RULE_SETUP
-#line 77 "pascal.lex"
+#line 82 "pascal.lex"
 linhas++;
 	YY_BREAK
 /* Outros, gera erro */
 case 19:
 YY_RULE_SETUP
-#line 81 "pascal.lex"
-{printf("Erro na análise léxica do código fonte. O caractere %s na linha %d não é reconhecido.\n", yytext, linhas);exit(1);}
+#line 86 "pascal.lex"
+erro(); 
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 83 "pascal.lex"
+#line 88 "pascal.lex"
 ECHO;
 	YY_BREAK
-#line 980 "pascal.c"
+#line 985 "pascal.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comentario):
 	yyterminate();
@@ -1974,11 +1979,23 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 83 "pascal.lex"
+#line 88 "pascal.lex"
 
 
 
-int main(int argc, char *argv[]){
+void imprimir(char *tipo_de_token)
+{
+  printf("%s\t%s\n", yytext, tipo_de_token);
+}
+
+void erro() 
+{
+  printf("Erro na análise léxica do código fonte. O caractere %s na linha %d não é reconhecido.\n", yytext, linhas);
+  exit(1);
+}
+
+int main(int argc, char *argv[])
+{
 	yyin = fopen(argv[1], "r");
 	yylex();
 	fclose(yyin);
