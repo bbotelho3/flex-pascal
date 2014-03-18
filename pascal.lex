@@ -33,7 +33,7 @@ absolute|array|begin|case|char|const|div|do|dowto|else|end|external|file|for|for
 
  /* Comentários */
 
-"/*"         			         BEGIN(comentario);     
+"/*"                       BEGIN(comentario);     
 <comentario>[^*\n]*        /* Tudo que não é quebra de linha e * */
 <comentario>"*"+[^*/\n]*   /* * não seguidos por / e quebras de linha  */
 <comentario>\n             linhas++;
@@ -67,11 +67,11 @@ and|or|not                 imprimir("OPERADORLOGICO");
 
  /* Símbolos */
 
-[=,;:()] 		               imprimir("SIMBOLOESPECIAL");
+[=,;:()] 		           imprimir("SIMBOLOESPECIAL");
 
  /* Ponto final */
 
-"."					               imprimir("FIM"); 
+"."					       imprimir("FIM"); 
 
  /* Espaços em branco são consumidos */
 
