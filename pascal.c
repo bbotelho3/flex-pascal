@@ -948,11 +948,11 @@ YY_RULE_SETUP
 #line 72 "pascal.lex"
 imprimir("FIM"); 
 	YY_BREAK
-/* Espaços em branco são consumidos */
+/* Espaços */
 case 15:
 YY_RULE_SETUP
 #line 76 "pascal.lex"
-
+/* Espaços em branco são consumidos */
 	YY_BREAK
 /* Quebras de linhas são contadas para facilitar a identificação de tokens inválidos */
 case 16:

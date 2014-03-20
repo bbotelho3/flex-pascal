@@ -71,9 +71,9 @@ and|or|not                 imprimir("OPERADORLOGICO");
 
 "."					       imprimir("FIM"); 
 
- /* Espaços em branco são consumidos */
+ /* Espaços */
 
-{espacos_em_branco}
+{espacos_em_branco} 	   /* Espaços em branco são consumidos */
 
  /* Quebras de linhas são contadas para facilitar a identificação de tokens inválidos */
 

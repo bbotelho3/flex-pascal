@@ -1,0 +1,1 @@
+resultado = `./pascal teste.pas`
