@@ -12,7 +12,7 @@ void erro();
 
 %}
 
-%x comentario
+%x COMENTARIO
 
 espacos_em_branco [ \t]*
 digitos           [0-9]
@@ -22,7 +22,7 @@ identificador     {letras}{letras_numeros}*
 exponente         e[+-]?{digitos}+
 inteiro           {digitos}+
 real              ({inteiro}\.{inteiro}?|{inteiro}?\.{inteiro}){exponente}?
-string            \'([^'\n]|\'\')+\'|\"([^'\n]|\'\')+\"
+string            \"(\\.|[^\\"])*\"
 
 %%
 
@@ -33,11 +33,9 @@ absolute|array|begin|case|char|const|div|do|dowto|else|end|external|file|for|for
 
  /* Comentários */
 
-"/*"                       BEGIN(comentario);     
-<comentario>[^*\n]*        /* Tudo que não é quebra de linha e * */
-<comentario>"*"+[^*/\n]*   /* * não seguidos por / e quebras de linha  */
-<comentario>\n             linhas++;
-<comentario>"*/"           BEGIN(INITIAL);
+"/*"                                            BEGIN(COMENTARIO);     
+<COMENTARIO>([^*]|[\n]|(\*+([^*/]|[\n])))*      /* Consome o conteúdo do comentário */
+<COMENTARIO>"*"+"/"                             BEGIN(INITIAL);
 
  /* Atribuição */
 
