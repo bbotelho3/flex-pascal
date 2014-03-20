@@ -1,5 +1,5 @@
-c = "bernard223324434334da/a/dpoqwkddqomdq3#31##o";
-b = "bernardo
+c = "bernard223324434334da/a/dpoqwkddqomdq3#31##o"; "
+b = "bernardo"
 
 /*
 ****
@@ -10,5 +10,4 @@ b = "bernardo
  */
 
 
- end
- 
+ end.

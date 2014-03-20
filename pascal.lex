@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-int linhas = 0;
+int linhas = 1;
 
 void imprimir(char *tipo_de_token);
 
@@ -33,9 +33,11 @@ absolute|array|begin|case|char|const|div|do|dowto|else|end|external|file|for|for
 
  /* Comentários */
 
-"/*"                                            BEGIN(COMENTARIO);     
-<COMENTARIO>([^*]|[\n]|(\*+([^*/]|[\n])))*      /* Consome o conteúdo do comentário */
-<COMENTARIO>"*"+"/"                             BEGIN(INITIAL);
+"/*"                       BEGIN(COMENTARIO);     
+<COMENTARIO>[^*\n]*        /* Tudo que não é quebra de linha e * */
+<COMENTARIO>"*"+[^*/\n]*   /* * não seguidos por / e quebras de linha  */
+<COMENTARIO>\n             linhas++;
+<COMENTARIO>"*/"           BEGIN(INITIAL);
 
  /* Atribuição */
 
@@ -65,15 +67,15 @@ and|or|not                 imprimir("OPERADORLOGICO");
 
  /* Símbolos */
 
-[=,;:()] 		           imprimir("SIMBOLOESPECIAL");
+[=,;:()] 		               imprimir("SIMBOLOESPECIAL");
 
  /* Ponto final */
 
-"."					       imprimir("FIM"); 
+"."					               imprimir("FIM"); 
 
  /* Espaços */
 
-{espacos_em_branco} 	   /* Espaços em branco são consumidos */
+{espacos_em_branco} 	     /* Espaços em branco são consumidos */
 
  /* Quebras de linhas são contadas para facilitar a identificação de tokens inválidos */
 
