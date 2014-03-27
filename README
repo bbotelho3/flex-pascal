@@ -1,0 +1,5 @@
+Para a criação dos arquivos .c e .o, execute o comando make.
+
+Para realizar a análise léxica, execute ./pascal arquivo_pascal.pas
+
+Testado no OS X 10.9.2 (Mavericks).
