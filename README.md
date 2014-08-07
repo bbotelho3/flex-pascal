@@ -1,4 +1,4 @@
-flex-toy-pascal
+flex-pascal
 ---------
 
 A flex definition for a subset of the Pascal language.
